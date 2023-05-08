@@ -1,59 +1,112 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
+  <head>
+    <title>House Walkthrough</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        background-color: black;
+      }
+      .image-container {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .image-container img {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+        transition: transform 2s linear, opacity 1s ease-in-out;
+      }
+      .scroll-icon {
+        position: absolute;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        color: white;
+        font-size: 30px;
+        opacity: 0;
+        transition: opacity 1s ease-in-out;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="image-container">
+      <img src="image1.jpg" alt="Image 1">
+    </div>
+    <div class="scroll-icon">Scroll</div>
+    <script>
+      const images = [
+        "image2.jpg",
+        "image3.jpg",
+        "image4.jpg",
+        "image5.jpg",
+        "image6.jpg",
+        "https://responsibleuk.github.io/mission-zero-gallery/"
+      ];
+      let currentIndex = 0;
+      let canScroll = false;
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+      // show scroll icon after 5 seconds
+      setTimeout(() => {
+        const scrollIcon = document.querySelector(".scroll-icon");
+        scrollIcon.style.opacity = 1;
+        canScroll = true;
+      }, 5000);
 
-    <!-- Page Title -->
-    <title>Mission Zero</title>
-
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@600;800&family=Rajdhani:wght@700&display=swap"
-        rel="stylesheet">
-    <!-- Template Config -->
-    <link type="text/css" rel="stylesheet" href="css/config.css">
-    <!-- Libraries -->
-    <link type="text/css" rel="stylesheet" href="css/libs.css">
-    <!-- Template Styles -->
-    <link type="text/css" rel="stylesheet" href="css/style.css">
-    <!-- Responsive -->
-    <link type="text/css" rel="stylesheet" href="css/responsive.css">
-<!-- Tunnel -->
-    <link type="text/css" rel="stylesheet" href="assets/style.css">
-    
-
-    <!-- Favicon -->
-    <link rel="icon" href="img/favicon.png" sizes="32x32" />
-
-
-
-
-
-
-</head>
+      function transitionToNextImage() {
+        const currentImage = document.querySelector(".image-container img");
+        currentIndex = (currentIndex + 1) % images.length;
+        const nextImage = new Image();
+        nextImage.src = images[currentIndex];
+        nextImage.onload = function() {
+          // apply zoom-in effect to current image
+          currentImage.style.transform = "scale(1.5)";
+          setTimeout(() => {
+            // fade to black
+            currentImage.style.opacity = 0;
+            setTimeout(() => {
+              // fade from black and show next image
+              currentImage.src = nextImage.src;
+              currentImage.style.transform = "scale(1)";
+              currentImage.style.opacity = 1;
+              document.body.style.backgroundColor = "black";
+            }, 1000);
+          }, 2000);
+        };
+      }
 
 
 
-<body>
 
 
-<div class="carousel">
-    <div class="carousel-item"><img src="image1.jpg"></div>
-    <div class="carousel-item"><img src="image2.jpg"></div>
-    <div class="carousel-item"><img src="image3.jpg"></div>
-    <div class="carousel-item"><img src="image4.jpg"></div>
-    <div class="carousel-item"><img src="image5.jpg"></div>
-    <div class="carousel-item"><img src="image6.jpg"></div>
-    <!-- add more items as needed -->
-  </div>
-  
 
 
-    <!-- JS Scripts -->
-    <script src="assets/javascript/main.js"></script>
-   
-</body>
 
+
+
+
+
+      
+
+      function handleScroll(event) {
+        if (!canScroll) return;
+        canScroll = false;
+        transitionToNextImage();
+        setTimeout(() => {
+          canScroll = true;
+        }, 5000);
+      }
+
+      window.addEventListener("wheel", handleScroll);
+    </script>
+  </body>
 </html>
