@@ -54,14 +54,14 @@
       ];
       let currentIndex = 0;
       let canScroll = false;
-
+    
       // show scroll icon after 5 seconds
       setTimeout(() => {
         const scrollIcon = document.querySelector(".scroll-icon");
         scrollIcon.style.opacity = 1;
         canScroll = true;
       }, 5000);
-
+    
       function transitionToNextImage() {
         const currentImage = document.querySelector(".image-container img");
         currentIndex = (currentIndex + 1) % images.length;
@@ -75,28 +75,15 @@
             currentImage.style.opacity = 0;
             setTimeout(() => {
               // fade from black and show next image
-              currentImage.src = nextImage.src;
               currentImage.style.transform = "scale(1)";
+              currentImage.src = nextImage.src;
               currentImage.style.opacity = 1;
               document.body.style.backgroundColor = "black";
             }, 1000);
           }, 2000);
         };
       }
-
-
-
-
-
-
-
-
-
-
-
-
-      
-
+    
       function handleScroll(event) {
         if (!canScroll) return;
         canScroll = false;
@@ -105,8 +92,11 @@
           canScroll = true;
         }, 5000);
       }
-
+    
       window.addEventListener("wheel", handleScroll);
     </script>
+    
+
+
   </body>
 </html>
